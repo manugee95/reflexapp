@@ -33,14 +33,24 @@ body{
   height: 30px;
   padding: 5px;
   color: white;
+  text-align: center;
 }
 .card .close{
   position: absolute;
-  left: 430px;
+  left: 420px;
   bottom: 100px;
   border: none;
   font-size: 1rem;
   color: deeppink;
+  background-color: white;
+  cursor: pointer;
+}
+.card .edit{
+  position: absolute;
+  left: 390px;
+  bottom: 100px;
+  border: none;
+  font-size: 1rem;
   background-color: white;
   cursor: pointer;
 }
@@ -149,7 +159,7 @@ ul{
 @media (max-width: 900px){
   .card .close{
     position: absolute;
-    left: 250px;
+    left: 280px;
     bottom: 130px;
   }
   .input-group input{
