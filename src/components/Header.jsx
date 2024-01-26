@@ -15,7 +15,7 @@ function Header({ text, bgColor, textColor }) {
 }
 
 Header.defaultProps = {
-  text: "My Feedback Header",
+  text: "ReflexTouch",
   bgColor: "purple",
   textColor: "yellow"
 };
