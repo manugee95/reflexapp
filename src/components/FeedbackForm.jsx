@@ -4,21 +4,27 @@ import { useState } from "react";
 import RatingSelect from "./RatingSelect";
 import { useContext, useEffect } from "react";
 import FeedbackContext from "../context/FeedbackContext";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 function FeedbackForm() {
-  const {postHandler, editFeedback, updateFeedback} = useContext(FeedbackContext)
+  const { postHandler, editFeedback, updateFeedback } =
+    useContext(FeedbackContext);
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(10)
+  const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
+  const [state, dispatch] = useAuth();
 
-  useEffect(()=>{
+  const isAuthenticated = state.accessToken !== null;
+
+  useEffect(() => {
     if (editFeedback.edit === true) {
-      setBtnDisabled(false)
-      setText(editFeedback.item.text)
-      setRating(editFeedback.item.rating)
+      setBtnDisabled(false);
+      setText(editFeedback.item.text);
+      setRating(editFeedback.item.rating);
     }
-  }, [editFeedback])
+  }, [editFeedback]);
 
   const handleTextChange = (e) => {
     if (text === "") {
@@ -35,42 +41,55 @@ function FeedbackForm() {
     setText(e.target.value);
   };
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (text.trim().length > 10) {
       const newFeedBack = {
         text: text,
-        rating: rating
-      }
+        rating: rating,
+      };
 
       if (editFeedback.edit === true) {
-        updateFeedback(editFeedback.item.id, newFeedBack)
-      }else{
+        updateFeedback(editFeedback.item._id, newFeedBack);
+      } else {
         postHandler(newFeedBack);
       }
 
-      setText("")
+      setText("");
     }
-  }
+  };
+
+  const postForm = (
+    <form onSubmit={handleSubmit}>
+      <h3 className="how">How would you like to rate our service?</h3>
+      <RatingSelect select={(rating) => setRating(rating)} />
+      <div className="input-group">
+        <input
+          type="text"
+          placeholder="Write a Review"
+          value={text}
+          onChange={handleTextChange}
+        />
+        <Button type="submit" isDisabled={btnDisabled} version={"tertiary"}>
+          Submit
+        </Button>
+        {message && <div>{message}</div>}
+      </div>
+    </form>
+  );
 
   return (
     <Card>
-      <form onSubmit={handleSubmit}>
-        <h3 className="how">How would you like to rate our service?</h3>
-        <RatingSelect select={(rating) => setRating(rating)}/>
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Write a Review"
-            value={text}
-            onChange={handleTextChange}
-          />
-          <Button type="submit" isDisabled={btnDisabled} version={"tertiary"}>
-            Submit
-          </Button>
-          {message && <div>{message}</div>}
-        </div>
-      </form>
+      {isAuthenticated ? (
+        postForm
+      ) : (
+        <>
+          <div>Please Login to Leave a Feedback</div>
+          <Link to="/login">
+            <Button>Login</Button>
+          </Link>
+        </>
+      )}
     </Card>
   );
 }

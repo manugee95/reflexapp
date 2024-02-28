@@ -4,13 +4,21 @@ import FeedbackList from "./components/FeedbackList";
 import FeedbackStats from "./components/FeedbackStats";
 import FeedbackForm from "./components/FeedbackForm";
 import AboutPage from "./components/pages/AboutPage";
+import RegisterPage from "./components/pages/RegisterPage";
+import Login from "./components/pages/Login";
 import Card from "./components/shared/Card";
 import { FeedbackProvider } from "./context/FeedbackContext";
+import AuthProvider from "./context/AuthContext";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
+  const {getItem} = useLocalStorage("x-auth-token")
+  const token = getItem()
+  let authInitialState = {accessToken: token ?? null}
 
   return (
-    <FeedbackProvider>
+    <AuthProvider defaultState={authInitialState}>
+      <FeedbackProvider>
       <Router>
       <Header />
       <div className="container">
@@ -26,6 +34,8 @@ function App() {
             }
           />
           <Route path="/about" element={<AboutPage />}/>
+          <Route path="/register" element={<RegisterPage />}/>
+          <Route path="/login" element={<Login />}/>
         </Routes>
         <Card>
           <NavLink to="/" activeclassname="active">
@@ -38,6 +48,7 @@ function App() {
       </div>
     </Router>
     </FeedbackProvider>
+    </AuthProvider>
   );
 }
 

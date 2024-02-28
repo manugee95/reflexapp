@@ -12,9 +12,8 @@ function FeedbackList({ handleDelete }) {
     <div>
       {feedback.map((item) => (
         <FeedbackItem
-          key={item.id}
+          key={item._id}
           feedback={item}
-          deleteFeedback={handleDelete}
         />
       ))}
     </div>
