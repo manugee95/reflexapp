@@ -12,14 +12,14 @@ export const FeedbackProvider = ({ children }) => {
   }, []);
 
   const getFeedback = async () => {
-    const response = await fetch("http://localhost:3000/api/feedback");
+    const response = await fetch("https://reflextouch-api.onrender.com/api/feedback");
     const data = await response.json();
     setFeedback(data);
   };
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
-      await fetch(`http://localhost:3000/api/feedback/${id}`, {
+      await fetch(`https://reflextouch-api.onrender.com/api/feedback/${id}`, {
         method: "DELETE",
         headers: { "x-auth-token": state.accessToken },
       });
@@ -29,7 +29,7 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   const postHandler = async (newFeedBack) => {
-    const response = await fetch(`http://localhost:3000/api/feedback`, {
+    const response = await fetch(`https://reflextouch-api.onrender.com/api/feedback`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   const updateFeedback = async (id, updItem) => {
-    const response = await fetch(`http://localhost:3000/api/feedback/${id}`, {
+    const response = await fetch(`https://reflextouch-api.onrender.com/api/feedback/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
